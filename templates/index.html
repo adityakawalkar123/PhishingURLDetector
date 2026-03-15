@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishGuard — Phishing URL Detection Tool</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       PARALLAX BACKGROUND LAYERS
+  ══════════════════════════════════════════════════════════ -->
+  <div class="bg-layer bg-grid"></div>
+  <div class="bg-layer bg-particles" id="particles"></div>
+  <div class="bg-layer bg-scanline"></div>
+
+  <!-- Floating glowing orbs for depth -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MAIN WRAPPER
+  ══════════════════════════════════════════════════════════ -->
+  <div class="main-wrapper">
+
+    <!-- ── HEADER SECTION ──────────────────────────────────── -->
+    <header class="site-header" id="header">
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        SYSTEM ACTIVE
+      </div>
+
+      <div class="logo-container">
+        <div class="logo-icon">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 4L8 14V30C8 42 18 52 30 56C42 52 52 42 52 30V14L30 4Z" stroke="#00ffcc" stroke-width="2" fill="none"/>
+            <path d="M30 4L8 14V30C8 42 18 52 30 56C42 52 52 42 52 30V14L30 4Z" stroke="#00ffcc" stroke-width="1" fill="#00ffcc08"/>
+            <circle cx="30" cy="30" r="8" stroke="#00ffcc" stroke-width="1.5" fill="none"/>
+            <path d="M30 22V18M30 42V38M22 30H18M42 30H38" stroke="#00ffcc" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="30" cy="30" r="3" fill="#00ffcc"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>PhishGuard</h1>
+          <span class="logo-sub">URL Threat Detection System v2.4</span>
+        </div>
+      </div>
+
+      <!-- Info Cards Row -->
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-card-icon">🎯</div>
+          <div class="info-card-body">
+            <h3>What is Phishing?</h3>
+            <p>Phishing attacks use deceptive URLs to impersonate trusted websites — tricking users into revealing passwords, credit cards, or personal data. Over <strong>3.4 billion</strong> phishing emails are sent daily worldwide.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🛡️</div>
+          <div class="info-card-body">
+            <h3>How We Detect It</h3>
+            <p>Our heuristic engine runs <strong>6 security checks</strong> on every URL — analyzing protocol security, domain patterns, keyword traps, IP spoofing, character anomalies, and subdomain depth.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">⚡</div>
+          <div class="info-card-body">
+            <h3>Instant Analysis</h3>
+            <p>Results are returned in <strong>milliseconds</strong>. Each check contributes to a weighted risk score (0–100). The final verdict classifies the URL as Safe, Suspicious, or High Risk.</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── SCANNER PANEL ────────────────────────────────────── -->
+    <section class="scanner-panel" id="scanner">
+      <div class="panel-frame">
+        <div class="panel-corner tl"></div>
+        <div class="panel-corner tr"></div>
+        <div class="panel-corner bl"></div>
+        <div class="panel-corner br"></div>
+
+        <div class="panel-header">
+          <div class="panel-title-row">
+            <div class="pulse-ring"></div>
+            <span class="panel-label">THREAT SCANNER</span>
+          </div>
+          <div class="panel-status" id="status-bar">
+            <span class="status-dot idle"></span>
+            <span id="status-text">AWAITING INPUT</span>
+          </div>
+        </div>
+
+        <div class="scanner-body">
+          <div class="input-group">
+            <label class="input-label">
+              <span class="label-icon">🔗</span>
+              Enter URL to Analyze
+            </label>
+            <div class="input-wrapper">
+              <div class="input-prefix">URL://</div>
+              <input
+                type="text"
+                id="url-input"
+                class="url-input"
+                placeholder="e.g. http://secure-paypal-login.verify-account.com/update"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button class="clear-btn" id="clear-btn" title="Clear">✕</button>
+            </div>
+            <div class="input-hint">Enter any URL including http/https prefix to begin threat analysis</div>
+          </div>
+
+          <button class="analyze-btn" id="analyze-btn">
+            <span class="btn-text">ANALYZE URL</span>
+            <span class="btn-icon">⟶</span>
+            <div class="btn-shimmer"></div>
+          </button>
+
+          <!-- Sample URLs for quick testing -->
+          <div class="sample-urls">
+            <span class="sample-label">Quick test:</span>
+            <button class="sample-chip safe" data-url="https://www.google.com">google.com ✅</button>
+            <button class="sample-chip warn" data-url="http://secure-login.paypal-verify.account-update.com/password">Suspicious ⚠️</button>
+            <button class="sample-chip danger" data-url="http://192.168.1.1/login/verify/bank/account/update/password@secure">High Risk 🚨</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RESULTS PANEL ────────────────────────────────────── -->
+    <section class="results-section" id="results-section" style="display:none;">
+
+      <!-- Verdict Banner -->
+      <div class="verdict-banner" id="verdict-banner">
+        <div class="verdict-content">
+          <div class="verdict-emoji" id="verdict-emoji">🔍</div>
+          <div class="verdict-text">
+            <div class="verdict-label" id="verdict-label">ANALYZING...</div>
+            <div class="verdict-desc" id="verdict-desc"></div>
+          </div>
+          <div class="verdict-score-circle">
+            <svg viewBox="0 0 120 120" class="score-ring-svg">
+              <circle class="ring-bg" cx="60" cy="60" r="50"/>
+              <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="50"
+                      stroke-dasharray="314" stroke-dashoffset="314"/>
+            </svg>
+            <div class="score-number" id="score-number">0</div>
+            <div class="score-label">RISK SCORE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row" id="stats-row">
+        <div class="stat-box" id="stat-url">
+          <div class="stat-label">ANALYZED URL</div>
+          <div class="stat-value" id="stat-url-val">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">CHECKS PASSED</div>
+          <div class="stat-value green" id="stat-passed">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">CHECKS FAILED</div>
+          <div class="stat-value red" id="stat-failed">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">TOTAL CHECKS</div>
+          <div class="stat-value" id="stat-total">0</div>
+        </div>
+      </div>
+
+      <!-- Checks Grid -->
+      <div class="checks-header">
+        <span class="checks-title">DETAILED SECURITY ANALYSIS</span>
+        <span class="checks-subtitle">Individual check results with risk contributions</span>
+      </div>
+      <div class="checks-grid" id="checks-grid">
+        <!-- Dynamically injected by JavaScript -->
+      </div>
+
+      <!-- Re-scan button -->
+      <button class="rescan-btn" id="rescan-btn">
+        ← SCAN ANOTHER URL
+      </button>
+
+    </section>
+
+    <!-- ── FOOTER ───────────────────────────────────────────── -->
+    <footer class="site-footer">
+      <div class="footer-line"></div>
+      <p>PhishGuard v2.4 · Cybersecurity Mini Project · Heuristic-Based URL Analysis Engine</p>
+      <p class="footer-note">⚠️ This tool uses pattern-based analysis. For production use, combine with threat intelligence databases.</p>
+    </footer>
+
+  </div><!-- /main-wrapper -->
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loading-overlay" style="display:none;">
+    <div class="loader-box">
+      <div class="loader-ring">
+        <div></div><div></div><div></div><div></div>
+      </div>
+      <div class="loader-text" id="loader-text">INITIALIZING SCAN...</div>
+      <div class="loader-progress">
+        <div class="loader-bar" id="loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
